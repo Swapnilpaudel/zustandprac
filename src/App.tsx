@@ -1,24 +1,42 @@
-import { create } from "zustand";
+import ChangeQtyButtons from "./components/changeQtyBtns";
 import { Button } from "./components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from "./components/ui/card";
+import { PRODUCTS_DATA } from "./lib/mockData";
+import { useStore } from "./store/store";
 
-const useStore = create<{
-  count: number;
-  inc: () => void;
-  dec: () => void;
-}>((set) => ({
-  count: 0,
-  inc: () => set((state) => ({ count: state.count + 1 })),
-  dec: () => set((state) => ({ count: state.count - 1 })),
-}));
-
-export default function App() {
-  const store = useStore();
-
+function App() {
+  const addProduct = useStore((state) => state.addProduct);
+  const products = useStore((state) => state.products);
   return (
-    <>
-      <Button onClick={store.inc}>Increment</Button>
-      {store.count}
-      <Button onClick={store.dec}>Decrement</Button>
-    </>
+    <main className="space-y-2 dark h-screen bg-background max-w-sm mx-auto mt-2">
+      <h1 className=" text-2xl "> Products</h1>
+
+      <div className="space y-2">
+        {PRODUCTS_DATA.map((product) => (
+          <Card key={product.id}>
+            <CardHeader>{product.title}</CardHeader>
+            <CardContent>{product.price}$</CardContent>
+            <CardDescription></CardDescription>
+            <CardFooter>
+              {products.find((item) => item.id === product.id) ? (
+                <ChangeQtyButtons productId={product.id}></ChangeQtyButtons>
+              ) : (
+                <Button onClick={() => addProduct(product)} variant="default">
+                  Add to Cart
+                </Button>
+              )}
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </main>
   );
 }
+
+export default App;

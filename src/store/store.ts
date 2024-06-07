@@ -3,13 +3,15 @@ import { create } from "zustand";
 import { createUserSlice } from "./userSlice";
 import { immer } from "zustand/middleware/immer";
 import { Store } from "@/types/store";
-import { devtools } from "zustand/middleware";
+import { devtools, subscribeWithSelector } from "zustand/middleware";
 
 export const useStore = create<Store>()(
   devtools(
-    immer((...a) => ({
-      ...createUserSlice(...a),
-      ...createCartSlice(...a),
-    }))
+    subscribeWithSelector(
+      immer((...a) => ({
+        ...createUserSlice(...a),
+        ...createCartSlice(...a),
+      }))
+    )
   )
 );

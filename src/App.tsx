@@ -1,3 +1,4 @@
+import Cart from "./components/cart";
 import ChangeQtyButtons from "./components/changeQtyBtns";
 import { Button } from "./components/ui/button";
 import {
@@ -15,6 +16,7 @@ function App() {
   const products = useStore((state) => state.products);
   return (
     <main className="space-y-2 dark h-screen bg-background max-w-sm mx-auto mt-2">
+      <Cart></Cart>
       <h1 className=" text-2xl "> Products</h1>
 
       <div className="space y-2">
